@@ -3,13 +3,17 @@
 // dp(i) = max j<i { dp(j) | a[j] < a[i] } + 1
 //
 
-// int dp[N], v[N], n, lis;
+int lis(vector<int>& a) {
+  vector<int> dp (a.size(), 0x3f3f3f3f);
+  int res = 0;
 
-memset(dp, 63, sizeof dp);
-for (int i = 0; i < n; ++i) {
-  // increasing: lower_bound
-  // non-decreasing: upper_bound
-  int j = lower_bound(dp, dp + lis, v[i]) - dp;
-  dp[j] = min(dp[j], v[i]);
-  lis = max(lis, j + 1);
+  for (int v : a) {
+    // increasing: lower_bound
+    // non-decreasing: upper_bound
+    int j = lower_bound(dp.begin(), dp.begin() + res, v) - dp.begin();
+    dp[j] = min(dp[j], v);
+    res = max(res, j + 1);
+  }
+
+  return res;
 }
